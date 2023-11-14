@@ -99,7 +99,7 @@ class LoginForm extends StatelessWidget {
         TextFieldWidget(
           controller: passwordController,
           label: 'Password',
-          hintText: 'random#890',
+          hintText: 'pwd#890',
           isPassword: true,
         ),
         const SizedBox(height:30),
