@@ -4,7 +4,6 @@ class InfoButton extends StatelessWidget {
   InfoButton({super.key, required this.msg, required this.infoColor});
 
   void showInfo(BuildContext context, String msg){
-    print("BUTTON ENTEREDDDD");
     showDialog(context: context, builder: (context){
       return AlertDialog(
         backgroundColor:const Color.fromARGB(255, 37, 37, 37),icon: const Icon(Icons.error,color: Colors.white,size: 25,),
