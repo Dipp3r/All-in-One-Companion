@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class MyLocation extends StatefulWidget {
   
@@ -37,8 +36,8 @@ class _MyLocationState extends State<MyLocation> {
 
   void _liveLocation(){
     LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      accuracy: LocationAccuracy.best,
+      distanceFilter: 10,
     );
     Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
       setState(() {
@@ -53,7 +52,7 @@ class _MyLocationState extends State<MyLocation> {
     try{
       await launchUrl(Uri.parse(googleUrl)); 
     }catch(e){
-      throw 'Could not launch $googleUrl, dude to ${e}';
+      throw 'Could not launch $googleUrl, dude to $e';
     }
   }
 
