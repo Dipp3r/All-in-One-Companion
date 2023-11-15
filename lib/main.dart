@@ -1,11 +1,14 @@
 import 'package:all_in_one/HomePage.dart';
+import 'package:all_in_one/LoginOrSignupPage.dart';
 import 'package:all_in_one/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:logger/logger.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  Logger.level = Level.error;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -66,56 +69,58 @@ class First extends StatelessWidget {
             )
           ],
         ),
-        body: Center(
-          child: Column(    
-            children: [
-              const SizedBox(height: 10),
-              const Column(
-                children: [
-                  Text("All-in-One",style: TextStyle(
-                    fontSize: 40,
-                    color: Color.fromARGB(205, 47, 81, 109),
-                    fontWeight: FontWeight.w900,
-                    fontFamily: 'San Francisco',
-                  ),),
-                  Text("Companion",style: TextStyle(
-                    fontSize: 22,
-                    color: Color.fromARGB(162, 47, 81, 109),
-                    fontWeight: FontWeight.w800,
-                    fontFamily: 'San Francisco',
-                  ),),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Image.asset("assets/yoga.jpg",height: 250,width: 250),
-              const SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child:  Container(
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(    
+              children: [
+                const SizedBox(height: 10),
+                const Column(
+                  children: [
+                    Text("All-in-One",style: TextStyle(
+                      fontSize: 40,
+                      color: Color.fromARGB(205, 47, 81, 109),
+                      fontWeight: FontWeight.w900,
+                      fontFamily: 'San Francisco',
+                    ),),
+                    Text("Companion",style: TextStyle(
+                      fontSize: 22,
+                      color: Color.fromARGB(162, 47, 81, 109),
+                      fontWeight: FontWeight.w800,
+                      fontFamily: 'San Francisco',
+                    ),),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Image.asset("assets/yoga.jpg",height: 250,width: 250),
+                const SizedBox(height: 10),
+                Padding(
                   padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(138, 192, 235, 174),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: const Column(
-                    children: [
-                      Text("Unlock the power of Seamless Living with 'All-in-One Companion'-",style: TextStyle(
-                        fontSize: 14,
-                        color: Color.fromARGB(227, 52, 52, 52),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'San Francisco',
-                      ),),
-                      Text("Your Ultimate Sidekick for a Day of Effortless Productivity, Endless Entermainment, and Unmatched Connectivity. From sunrise to sunsent, this cersatile app is your gateway to a world where every task, every moment, and every connection is effortlessly enhanced. Streamline your life, embrace productivity, and reveal in the joy of an all-encompassing companion that adapts to your every need. Your day jusy got a whole lot smoother!",style: TextStyle(
-                        fontSize: 12,
-                        color: Color.fromARGB(218, 94, 94, 94),
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'San Francisco',
-                      ),),
-                    ],
+                  child:  Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(138, 192, 235, 174),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: const Column(
+                      children: [
+                        Text("Unlock the power of Seamless Living with 'All-in-One Companion'-",style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(227, 52, 52, 52),
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'San Francisco',
+                        ),),
+                        Text("Your Ultimate Sidekick for a Day of Effortless Productivity, Endless Entermainment, and Unmatched Connectivity. From sunrise to sunsent, this cersatile app is your gateway to a world where every task, every moment, and every connection is effortlessly enhanced. Streamline your life, embrace productivity, and reveal in the joy of an all-encompassing companion that adapts to your every need. Your day jusy got a whole lot smoother!",style: TextStyle(
+                          fontSize: 12,
+                          color: Color.fromARGB(218, 94, 94, 94),
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'San Francisco',
+                        ),),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -133,11 +138,11 @@ class AuthPage extends StatelessWidget {
         builder:(context, snapshot) {
           //user is logged in
           if(snapshot.hasData){
-            return const HomePage();
+            return HomePage();
           }
           //user is not logged in
           else{
-            return LoginPage();
+            return const LoginOrSignupPage();
           }
         },
       )

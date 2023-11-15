@@ -1,44 +1,52 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
 
   final Function()? toggle;
-  const LoginPage({super.key,required this.toggle});
+  const RegisterPage({super.key,required this.toggle});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
   
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  void signUserIn() async{
+  void signUserUp() async{
 
     showDialog(context: context, builder: (context){
       return const Center(
         child: CircularProgressIndicator()
       );
     });
-    try{
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text, 
-        password: passwordController.text,
-      );
-      Navigator.pop(context);
-    } on FirebaseAuthException catch(e){
-      Navigator.pop(context);
-      print("ERROR ON FIREBASE"+e.code);
-      if(e.code == 'INVALID_LOGIN_CREDENTIALS'){
-        showError("Incorrect password or email");     
-      } else if(e.code == 'invalid-email'){
-        showError("Email entered is invalid");
-      }
-    }
     
+      try{
+        if(passwordController.text == confirmPasswordController.text){
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, 
+            password: passwordController.text,
+          );
+          Navigator.pop(context);
+        } else{
+          Navigator.pop(context);
+          showError("Passwords don't match"); 
+        }
+      } on FirebaseAuthException catch(e){
+          Navigator.pop(context);
+          print("ERROR ON FIREBASE"+e.code);
+          if(e.code == 'weak-password'){
+            showError("Password should be at least 6 characters");     
+          } else if(e.code == 'invalid-email'){
+            showError("Email entered is invalid");
+          } else if(e.code == 'email-already-in-use'){
+            showError("This email is already in use");
+          }
+        }
   }
 
   void showError(String msg){
@@ -68,12 +76,12 @@ class _LoginPageState extends State<LoginPage> {
               width: 100,
               height: 100,
               decoration: const BoxDecoration(
-                color:Color.fromARGB(255, 180, 238, 255),
+                color:Color.fromARGB(255, 118, 239, 182),
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30))
               ),
               child: TextButton(
                 onPressed: (){
-                  signUserIn();
+                  signUserUp();
                 }, 
                 style: IconButton.styleFrom(
                   splashFactory: NoSplash.splashFactory,
@@ -83,10 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                   elevation: 0,
                 ),
                 child: const Padding(
-                  padding: EdgeInsets.only(left: 15),
+                  padding: EdgeInsets.only(left: 8),
                   child: Row(
                     children: [
-                      Text("Login"),
+                      Text("Register"),
                       Icon(Icons.arrow_forward_ios_rounded,size: 15),
                     ],
                   ),
@@ -97,29 +105,28 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [ 
-                Image.asset("assets/time1.png",height: 250,width: 250,),
-                LoginForm(emailController: emailController,passwordController: passwordController,),
-                const SizedBox(height:30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account? ",),
-                    GestureDetector(
-                      onTap:widget.toggle,
-                      child: const Text("Register now",style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color:Color.fromARGB(255, 52, 115, 166),
-                    ),)
-                    )
-                  ],
-                ),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset("assets/register.png",height: 300,width: 300,),
+              Padding(
+                padding: const EdgeInsets.only(left:30.0,right:30.0,bottom: 20.0),
+                child: RegisterForm(emailController: emailController,passwordController: passwordController,confirmPasswordController: confirmPasswordController,),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Already a member? ",),
+                  GestureDetector(
+                    onTap:widget.toggle,
+                    child: const Text("Sign in",style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color:Color.fromARGB(255, 52, 115, 166),
+                  ),)
+                  )
+                ],
+              ),
+            ],
           ),
           
         ),
@@ -128,18 +135,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class LoginForm extends StatelessWidget {
+class RegisterForm extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  const LoginForm({super.key, required this.emailController, required this.passwordController});
+  final TextEditingController confirmPasswordController;
+  const RegisterForm({super.key, required this.emailController, required this.passwordController, required this.confirmPasswordController});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        
         const SizedBox(height: 20), 
         // Username Field
         TextFieldWidget(
@@ -152,6 +159,14 @@ class LoginForm extends StatelessWidget {
         TextFieldWidget(
           controller: passwordController,
           label: 'Password',
+          hintText: 'pwd#890',
+          isPassword: true,
+        ),
+        const SizedBox(height: 20), // Add some spacing between fields
+        // Password Field
+        TextFieldWidget(
+          controller: confirmPasswordController,
+          label: 'Confirm Password',
           hintText: 'pwd#890',
           isPassword: true,
         ),
