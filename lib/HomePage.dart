@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:all_in_one/RssFeed.dart';
+import 'package:all_in_one/alarm.dart';
 import 'package:all_in_one/calculator.dart';
 import 'package:all_in_one/draw.dart';
+import 'package:all_in_one/geoMap.dart';
 import 'package:all_in_one/infoButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
                 children: <Widget>[
                   DrawerHeader(
                     decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 54, 54, 54),
+                      color: Color.fromARGB(255, 50, 50, 50),
                     ),
                     child: Center(
                       child: Text(
@@ -48,12 +50,41 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  ListTile(
-                    title: const Text('Item 1'),
+                  ListTile(trailing: const Icon(Icons.notifications),
+                    title: const Text('Notification'),
                     onTap: () {
                       // Handle item 1 tap
                       Navigator.pop(context); // Close the drawer
                     },
+                  ),
+                  const Divider(
+                    height: 20,
+                    thickness: 1,
+                    color: Color.fromARGB(255, 98, 98, 98),
+                  ),
+                  ListTile(trailing: const Icon(Icons.settings),
+                    title: const Text('Settings'),
+                    onTap: () {
+                      // Handle item 1 tap
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  ),
+                  const Divider(
+                    height: 20,
+                    thickness: 1,
+                    color: Color.fromARGB(255, 98, 98, 98),
+                  ),
+                  ListTile(trailing: const Icon(Icons.security),
+                    title: const Text('Privacy & Security'),
+                    onTap: () {
+                      // Handle item 1 tap
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  ),
+                  const Divider(
+                    height: 20,
+                    thickness: 1,
+                    color: Color.fromARGB(255, 98, 98, 98),
                   ),
                   // Add more items as needed
                 ],
@@ -222,7 +253,9 @@ class HomePage extends StatelessWidget {
                                   children: [
                                     GestureDetector(
                                       onTap: (){
-                                        print("ENTERING COFFEE PAGE");
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                          return const MyLocation();
+                                        }));
                                       },
                                       child: Container(
                                        height: 308,
@@ -260,7 +293,9 @@ class HomePage extends StatelessWidget {
                                     children: [
                                       GestureDetector(
                                         onTap: (){
-                                          print("ENTERING ALARM PAGE");
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                            return const Alarm();
+                                          }));
                                         },
                                         child: Container(
                                         height: 150,
