@@ -11,15 +11,78 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final List<String> splitString = FirebaseAuth.instance.currentUser!.email!.split('@');
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void signOut(){
     FirebaseAuth.instance.signOut();
   }
 
+  void _openDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       extendBodyBehindAppBar: true,
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  DrawerHeader(
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 54, 54, 54),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Profile',
+                        style: GoogleFonts.roboto(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Item 1'),
+                    onTap: () {
+                      // Handle item 1 tap
+                      Navigator.pop(context); // Close the drawer
+                    },
+                  ),
+                  // Add more items as needed
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin:const  EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 195, 69, 60),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: ListTile(
+                  trailing:const Icon(Icons.logout,color: Colors.white,),
+                  title: const Text('Logout',style: TextStyle(
+                    color: Colors.white,
+                  ),),
+                  onTap: () {
+                    // Handle item 2 tap
+                    FirebaseAuth.instance.signOut(); // Close the drawer
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        
+      ),
       // appBar: AppBar(
       //   shadowColor: const Color.fromARGB(255, 255, 255, 255),
       //   backgroundColor: Colors.white,
@@ -278,15 +341,7 @@ class HomePage extends StatelessWidget {
                 color: Color.fromARGB(222, 36, 36, 36),
                 borderRadius: BorderRadius.circular(10.0)
               ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  BottomBarButton(icon: Icons.home),
-                  BottomBarButton(icon: Icons.alarm),
-                  BottomBarButton(icon: Icons.newspaper),
-                  BottomBarButton(icon: Icons.person),
-                ],
-              ),
+              child: BottomBar(onTap: _openDrawer),
             ),
           ),
         ),
@@ -295,10 +350,65 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class BottomBar extends StatefulWidget {
+  final VoidCallback onTap;
+  const BottomBar({super.key, required this.onTap});
+
+  @override
+  State<BottomBar> createState() => _BottomBarState();
+}
+
+class _BottomBarState extends State<BottomBar> {
+  int selectedIndex = 0;
+
+  void _handleTap(int index) {
+    setState(() {
+      if (selectedIndex == index) {
+        selectedIndex = -1; // Reset the color if the same button is tapped
+      } else {
+        selectedIndex = index;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        BottomBarButton(
+          icon: Icons.home,
+          onTap: () => _handleTap(0),
+          isSelected: selectedIndex == 0,
+        ),
+        BottomBarButton(
+          icon: Icons.alarm,
+          onTap: () => _handleTap(1),
+          isSelected: selectedIndex == 1,
+        ),
+        BottomBarButton(
+          icon: Icons.newspaper,
+          onTap: () => _handleTap(2),
+          isSelected: selectedIndex == 2,
+        ),
+        BottomBarButton(
+          icon: Icons.person,
+          onTap: () {_handleTap(3); widget.onTap();},
+          isSelected: selectedIndex == 3,
+        ),
+      ],
+    );
+  }
+}
+
+
 class BottomBarButton extends StatefulWidget {
   final IconData icon;
+  final VoidCallback onTap;
+  final bool isSelected ;
+  
 
-  const BottomBarButton({super.key, required this.icon});
+  const BottomBarButton({super.key, required this.icon, required this.onTap, required this.isSelected});
 
   @override
   State<BottomBarButton> createState() => _BottomBarButtonState();
@@ -310,26 +420,26 @@ class _BottomBarButtonState extends State<BottomBarButton> {
   Color buttoncolor = Colors.white;
   double size = 25;
 
-  void toggleColor(){
-    setState(() {
-      if(clicked){
-        buttoncolor = Color.fromARGB(255, 183, 255, 238);
-        size = 35;
-      }else{
-        size = 25;
-        buttoncolor = Colors.white;
-      }
-      clicked = !clicked;
-    });
-  }
+  // void toggleColor(){
+  //   setState(() {
+  //     if(clicked){
+  //       buttoncolor = Color.fromARGB(255, 183, 255, 238);
+  //       size = 35;
+  //     }else{
+  //       size = 25;
+  //       buttoncolor = Colors.white;
+  //     }
+  //     clicked = !clicked;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(widget.icon, color: buttoncolor,size: size,),
+      icon: Icon(widget.icon, color: widget.isSelected?const Color.fromARGB(255, 183, 255, 238):Colors.white,size: size,),
       onPressed: () {
         // Handle button tap
-        toggleColor();
+        widget.onTap();
       },
     );
   }

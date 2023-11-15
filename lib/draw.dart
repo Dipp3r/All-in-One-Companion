@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
+import 'package:path_provider/path_provider.dart';
 class DoodleApp extends StatefulWidget {
   const DoodleApp({super.key});
 
@@ -10,6 +16,7 @@ class DoodleApp extends StatefulWidget {
 }
 class _DoodleAppState extends State<DoodleApp> {
   String selectedShape = 'circle';
+  final GlobalKey _key = GlobalKey();
   final TextEditingController _stroke = TextEditingController();
   final TextEditingController _radius = TextEditingController();
   final TextEditingController _x1 = TextEditingController();
@@ -67,11 +74,11 @@ class _DoodleAppState extends State<DoodleApp> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Container(
-                  margin: const EdgeInsets.only(left: 30),
+                  margin: const EdgeInsets.only(left: 5),
                   child: DropdownButton<String>(
                     style: const TextStyle(
                       color: Color.fromARGB(255, 25, 87, 138),
-                      fontSize: 16,
+                      fontSize: 18,
                     ),
                     items: const <String>['circle', 'rectangle', 'line'].map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -88,7 +95,7 @@ class _DoodleAppState extends State<DoodleApp> {
                   ),
                 ),
                 SizedBox(
-                  width: 65,
+                  width: 70,
                   height: 30,
                   child: TextField(
                     controller: _stroke,
@@ -131,12 +138,12 @@ class _DoodleAppState extends State<DoodleApp> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: 65,
+                  width: 70,
                   height: 30,
                   child: TextField(
                     controller: _x2,
@@ -150,7 +157,7 @@ class _DoodleAppState extends State<DoodleApp> {
                   ),
                 ),
                 SizedBox(
-                  width: 65,
+                  width: 70,
                   height: 30,
                   child: TextField(
                     controller: _y2,
@@ -188,33 +195,66 @@ class _DoodleAppState extends State<DoodleApp> {
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomPaint(
-                painter: ShapesPainter(shapes: shapes),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height - 300,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color.fromARGB(205, 168, 111, 206), width: 8),
-                      borderRadius: BorderRadius.circular(40),
+              child: RepaintBoundary(
+                key: _key,
+                child: CustomPaint(
+                  painter: ShapesPainter(shapes: shapes),
+                  size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height - 300),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height - 300,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color:const Color.fromARGB(205, 213, 213, 213), width: 5),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    addShape(); // Call a function to add the shape
-                  },
-                  icon: const Icon(Icons.add),
+            const SizedBox(height:10),
+            GestureDetector(
+              onTap: () {
+                addShape(); // Call a function to add the shape
+              },
+              child: Container(
+                width: 100,
+                height: 40,
+                padding: const EdgeInsets.only(left: 18),
+                decoration: BoxDecoration(
+                  color:const Color.fromARGB(255, 155, 230, 180),
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Add",style: GoogleFonts.roboto(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),),
+                    const Expanded(child: Icon(Icons.add)),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+        RenderRepaintBoundary boundary = _key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+        ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+        ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+        Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+        //save to file
+        final directory = await getExternalStorageDirectory();
+        File file =File('${directory!.path}/my_drawing.png');
+        await file.writeAsBytes(pngBytes);
+        print("Image save to: ${file.path}");
+      },
+      child: const Icon(Icons.save),
       ),
     );
   }
@@ -223,13 +263,13 @@ class _DoodleAppState extends State<DoodleApp> {
     setState(() {
       shapes.add(ShapeData(
         shapeType: selectedShape,
-        strokeWidth: double.parse(_stroke.text),
+        strokeWidth: double.tryParse(_stroke.text)??2.0,
         shapeColor: currentColor,
-        initialx:double.parse(_x1.text),
-        initialy:double.parse(_y1.text),
-        finalx:double.parse(_x2.text),
-        finaly:double.parse(_y2.text),
-        radius:double.parse(_radius.text),
+        initialx:double.tryParse(_x1.text)??50.0,
+        initialy:double.tryParse(_y1.text)??50.0,
+        finalx:double.tryParse(_x2.text)??250.0,
+        finaly:double.tryParse(_y2.text)??100.0,
+        radius:double.tryParse(_radius.text)??30.0,
       ));
     });
   }
