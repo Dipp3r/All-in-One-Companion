@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:all_in_one/infoButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -64,7 +65,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height:20),
+                  const SizedBox(height:10),
                   Container(
                     color: Color.fromARGB(255, 222, 222, 222),
                     child: Column(
@@ -88,13 +89,30 @@ class HomePage extends StatelessWidget {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(right:8.0,top:4.0),
-                                    child: Container(
-                                      height: 150,
-                                      width: MediaQuery.of(context).size.width/2-8+20,
-                                       decoration: BoxDecoration(
-                                        color: const Color.fromARGB(255, 255, 255, 255),
-                                        borderRadius: BorderRadius.circular(5.0), 
-                                      ),
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          height: 150,
+                                          width: MediaQuery.of(context).size.width/2-8+20,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(255, 255, 255, 255),
+                                            borderRadius: BorderRadius.circular(5.0), 
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Image.asset("assets/calc.png",height: 60,width: 60),
+                                              const SizedBox(height:5),
+                                              Text("Calculator",style: GoogleFonts.ptSans(
+                                                fontSize: 20,
+                                                color: const Color.fromARGB(255, 92, 92, 92),
+                                                fontWeight: FontWeight.w600,
+                                              ),),
+                                            ],
+                                          ),
+                                        ),
+                                        const InfoButton(msg: "Native Calculator: During work, you can quickly calculate project/daily expenses using the native calculator."),
+                                      ],
                                     ),
                                   )
                                 ],
