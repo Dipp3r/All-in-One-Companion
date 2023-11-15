@@ -224,6 +224,12 @@ class _DoodleAppState extends State<DoodleApp> {
       shapes.add(ShapeData(
         shapeType: selectedShape,
         strokeWidth: double.parse(_stroke.text),
+        shapeColor: currentColor,
+        initialx:double.parse(_x1.text),
+        initialy:double.parse(_y1.text),
+        finalx:double.parse(_x2.text),
+        finaly:double.parse(_y2.text),
+        radius:double.parse(_radius.text),
       ));
     });
   }
@@ -244,17 +250,17 @@ class ShapesPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     for (var shapeData in shapes) {
       final paint = Paint()
-        ..color = Colors.blue
+        ..color = shapeData.shapeColor
         ..strokeWidth = shapeData.strokeWidth
         ..style = PaintingStyle.stroke;
 
       if (shapeData.shapeType == 'rectangle') {
-        Rect rect = Rect.fromPoints(const Offset(50.0, 50.0), const Offset(250.0, 150.0));
+        Rect rect = Rect.fromPoints(Offset(shapeData.initialx, shapeData.initialy), Offset(shapeData.finalx, shapeData.finaly));
         canvas.drawRect(rect, paint);
       } else if (shapeData.shapeType == 'circle') {
-        canvas.drawCircle(const Offset(150.0, 200.0), 50.0, paint);
+        canvas.drawCircle(Offset(shapeData.initialx, shapeData.initialy),shapeData.radius, paint);
       } else if (shapeData.shapeType == 'line') {
-        canvas.drawLine(const Offset(0.0, 250.0), const Offset(650.0, 550.0), paint);
+        canvas.drawLine(Offset(shapeData.initialx, shapeData.initialy), Offset(shapeData.finalx, shapeData.finaly), paint);
       }
     }
   }
@@ -268,7 +274,13 @@ class ShapesPainter extends CustomPainter {
 class ShapeData {
   final String shapeType;
   final double strokeWidth;
-
-  ShapeData({required this.shapeType, required this.strokeWidth});
+  final Color shapeColor;
+  final double initialx;
+  final double initialy;
+  final double finalx;
+  final double finaly;
+  final double radius;
+  
+  ShapeData({required this.shapeColor,required this.initialx,required this.initialy,required this.finalx,required this.finaly,required this.radius, required this.shapeType, required this.strokeWidth});
 }
 
