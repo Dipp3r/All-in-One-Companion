@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MyLocation extends StatefulWidget {
   
@@ -33,6 +35,28 @@ class _MyLocationState extends State<MyLocation> {
     return await Geolocator.getCurrentPosition();
   }
 
+  void _liveLocation(){
+    LocationSettings locationSettings = const LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+    Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position position) {
+      setState(() {
+        latitude = position.latitude.toString();
+        longitude = position.longitude.toString();
+      });
+    });
+  }
+
+  Future<void> _openMap(String lat,String long) async {
+    String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+    try{
+      await launchUrl(Uri.parse(googleUrl)); 
+    }catch(e){
+      throw 'Could not launch $googleUrl, dude to ${e}';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +76,12 @@ class _MyLocationState extends State<MyLocation> {
               child: Image.asset("assets/maps.jpeg")
             ),
             const SizedBox(height: 20),
-            const Icon(Icons.location_pin,size:80,color: Color.fromARGB(255, 225, 57, 45)),
+            GestureDetector(
+              onTap:(){
+                _openMap(latitude,longitude);
+              },
+              child: const Icon(Icons.location_pin,size:80,color: Color.fromARGB(255, 225, 57, 45)
+            )),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -97,9 +126,11 @@ class _MyLocationState extends State<MyLocation> {
       ),
       floatingActionButton: FloatingActionButton(backgroundColor:const Color.fromARGB(255, 225, 57, 45),onPressed: (){
         _getCurrentLocation().then((value){
-          print(value);
-          latitude = '${value?.latitude}';
-          longitude = '${value?.longitude}';
+          setState(() {
+            latitude = '${value?.latitude}';
+            longitude = '${value?.longitude}';
+          });
+          _liveLocation();
         });
       },child:const Icon(Icons.location_history,color: Colors.white),),
     );
