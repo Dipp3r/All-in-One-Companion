@@ -1,6 +1,5 @@
 import 'package:all_in_one/HomePage.dart';
 import 'package:all_in_one/LoginOrSignupPage.dart';
-import 'package:all_in_one/LoginPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
