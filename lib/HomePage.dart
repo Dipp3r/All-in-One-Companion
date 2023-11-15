@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:all_in_one/RssFeed.dart';
 import 'package:all_in_one/calculator.dart';
+import 'package:all_in_one/draw.dart';
 import 'package:all_in_one/infoButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +48,10 @@ class HomePage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(left:15.0),
-                          child: Text("Welcome, ${splitString[0][0].toUpperCase()+splitString[0].substring(1)}",style:const TextStyle(
-                            fontSize: 30,
-                            color: Color.fromARGB(255, 46, 46, 46) ,
-                            fontWeight: FontWeight.w900,
+                          child: Text("Welcome, ${splitString[0][0].toUpperCase()+splitString[0].substring(1)}",style: GoogleFonts.pavanam(
+                            fontSize: 28,
+                            color: Color.fromARGB(255, 56, 56, 56) ,
+                            fontWeight: FontWeight.bold,
                           ),),
                         ),
                         Container(
@@ -88,7 +89,9 @@ class HomePage extends StatelessWidget {
                                         children: [
                                           GestureDetector(
                                             onTap: (){
-                                              print("ENTERING DOODLE PAGE");
+                                              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                                return const DoodleApp();
+                                              }));
                                             },
                                             child: Container(
                                             decoration: BoxDecoration(
@@ -109,8 +112,8 @@ class HomePage extends StatelessWidget {
                                                 ),),
                                               ],
                                             ),
-                                                                                  ),
                                           ),
+                                        ),
                                         InfoButton(msg: "Drawing Basic Graphical Primitives: Allows you to doodle and sketche using the app's drawing feature.",infoColor: Colors.white), 
                                         ],
                                       ),
