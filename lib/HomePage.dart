@@ -65,96 +65,165 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height:10),
-                  Container(
-                    color: Color.fromARGB(255, 222, 222, 222),
-                    child: Column(
-                      children:[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right:8.0,bottom:4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(255, 255, 255, 255),
-                                        borderRadius: BorderRadius.circular(5.0), 
-                                      ),
-                                      height: 150,
-                                      width: MediaQuery.of(context).size.width/2-8+20,
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right:8.0,top:4.0),
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          height: 150,
-                                          width: MediaQuery.of(context).size.width/2-8+20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color:const Color.fromARGB(255, 222, 222, 222),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Column(
+                        children:[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right:8.0,bottom:4.0),
+                                      child: Stack(
+                                        children: [
+                                          Container(
                                           decoration: BoxDecoration(
-                                            color: const Color.fromARGB(255, 255, 255, 255),
+                                            color:const Color.fromARGB(255, 18, 102, 63),
                                             borderRadius: BorderRadius.circular(5.0), 
                                           ),
+                                          height: 150,
+                                          width: MediaQuery.of(context).size.width/2-16+20,
                                           child: Column(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Image.asset("assets/calc.png",height: 60,width: 60),
+                                              Image.asset("assets/art.png",fit: BoxFit.fitWidth,),
                                               const SizedBox(height:5),
-                                              Text("Calculator",style: GoogleFonts.ptSans(
+                                              Text("Doodle",style: GoogleFonts.aldrich(
                                                 fontSize: 20,
-                                                color: const Color.fromARGB(255, 92, 92, 92),
+                                                color:const Color.fromARGB(255, 255, 255, 255),
                                                 fontWeight: FontWeight.w600,
                                               ),),
                                             ],
                                           ),
                                         ),
-                                        const InfoButton(msg: "Native Calculator: During work, you can quickly calculate project/daily expenses using the native calculator."),
-                                      ],
+                                        InfoButton(msg: "Drawing Basic Graphical Primitives: Allows you to doodle and sketche using the app's drawing feature.",infoColor: Colors.white), 
+                                        ],
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                 height: 308,
-                                  width: MediaQuery.of(context).size.width/2-16-20,
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 255, 255, 255),
-                                    borderRadius: BorderRadius.circular(5.0), 
+                                    Padding(
+                                      padding: const EdgeInsets.only(right:8.0,top:4.0),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            height: 150,
+                                            width: MediaQuery.of(context).size.width/2-16+20,
+                                            decoration: BoxDecoration(
+                                              color: const Color.fromARGB(255, 255, 255, 255),
+                                              borderRadius: BorderRadius.circular(5.0), 
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Image.asset("assets/calc.png",height: 60,width: 60),
+                                                const SizedBox(height:5),
+                                                Text("Calculator",style: GoogleFonts.aldrich(
+                                                  fontSize: 20,
+                                                  color: const Color.fromARGB(255, 92, 92, 92),
+                                                  fontWeight: FontWeight.w600,
+                                                ),),
+                                              ],
+                                            ),
+                                          ),
+                                          InfoButton(msg: "Native Calculator: During work, you can quickly calculate project/daily expenses using the native calculator.",infoColor: const Color.fromARGB(255, 128, 128, 128),),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                     height: 308,
+                                      width: MediaQuery.of(context).size.width/2-24-20,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 255, 99, 42),
+                                        borderRadius: BorderRadius.circular(5.0), 
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset("assets/coffee.jpeg",fit: BoxFit.fitWidth,),
+                                          Text("Coffee",style: GoogleFonts.aldrich(
+                                            fontSize: 20,
+                                            color: Color.fromARGB(255, 255, 255, 255),
+                                            fontWeight: FontWeight.w600,
+                                          ),),
+                                        ],
+                                      ),
                                   ),
-                              )
-                            ],
+                                  InfoButton(msg: "Use the app's built-in map to find the nearest coffee shop using GPS.",infoColor: Colors.white),
+                                  ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right:8.0,left:8.0,bottom:8.0),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right:8.0),
-                                child: Container(
-                                  height: 150,
-                                  width: MediaQuery.of(context).size.width/2-8-30,
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 255, 255, 255),
-                                    borderRadius: BorderRadius.circular(5.0), 
+                          Padding(
+                            padding: const EdgeInsets.only(right:8.0,left:8.0,bottom:8.0),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right:8.0),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                      height: 150,
+                                      width: MediaQuery.of(context).size.width/2-16-30,
+                                      decoration: BoxDecoration(
+                                        color:const Color.fromARGB(255, 223, 235, 211),                                 borderRadius: BorderRadius.circular(5.0), 
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset("assets/alarm.png",fit: BoxFit.fitWidth,),
+                                          Text("Alarm",style: GoogleFonts.aldrich(
+                                            fontSize: 20,
+                                            color:const Color.fromARGB(255, 83, 83, 83),
+                                            fontWeight: FontWeight.w600,
+                                          ),),
+                                        ],
+                                      ),
+                                    ),
+                                    InfoButton(msg: "Set a personalized alarm to wake up at a desired time.",infoColor: const Color.fromARGB(255, 83, 83, 83),),  
+                                    ],
                                   ),
                                 ),
-                              ),
-                              Container(
-                                height: 150,
-                                width: MediaQuery.of(context).size.width/2-16+30,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.circular(5.0), 
+                                Stack(
+                                  children: [
+                                    Container(
+                                      height: 150,
+                                      width: MediaQuery.of(context).size.width/2-24+30,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 148, 148, 148),
+                                        borderRadius: BorderRadius.circular(5.0), 
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset("assets/feed.png",height: 100,width: 100),
+                                          Text("Feed",style: GoogleFonts.aldrich(
+                                            fontSize: 20,
+                                            color: Color.fromARGB(255, 255, 255, 255),
+                                            fontWeight: FontWeight.w600,
+                                          ),),
+                                        ],
+                                      ),
+                                    ),  
+                                    InfoButton(msg: "RSS Feed : Browse the latest news articles fetched through the app's integrated RSS feed.",infoColor: Colors.white,), 
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
