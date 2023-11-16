@@ -23,6 +23,18 @@ class HomePage extends StatelessWidget {
     _scaffoldKey.currentState?.openDrawer();
   }
 
+  void loadAlarmPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+      return const Alarm();
+    }));
+  }
+
+  void loadNewsPage(BuildContext context){
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+      return const NewsApp();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -373,10 +385,10 @@ class HomePage extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 10,sigmaY: 10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(222, 36, 36, 36),
+                color: const Color.fromARGB(222, 36, 36, 36),
                 borderRadius: BorderRadius.circular(10.0)
               ),
-              child: BottomBar(onTap: _openDrawer),
+              child: BottomBar(onPersonTap: _openDrawer,onAlarmTap: () => loadAlarmPage(context),onNewsTap: () => loadNewsPage(context)),
             ),
           ),
         ),
@@ -386,15 +398,17 @@ class HomePage extends StatelessWidget {
 }
 
 class BottomBar extends StatefulWidget {
-  final VoidCallback onTap;
-  const BottomBar({super.key, required this.onTap});
+  final VoidCallback? onPersonTap;
+  final VoidCallback? onAlarmTap;
+  final VoidCallback? onNewsTap;
+  const BottomBar({super.key,  this.onPersonTap,  this.onAlarmTap,  this.onNewsTap});
 
   @override
   State<BottomBar> createState() => _BottomBarState();
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int selectedIndex = 0;
+  int selectedIndex = -1;
 
   void _handleTap(int index) {
     setState(() {
@@ -412,24 +426,19 @@ class _BottomBarState extends State<BottomBar> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         BottomBarButton(
-          icon: Icons.home,
-          onTap: () => _handleTap(0),
+          icon: Icons.alarm,
+          onTap: () {_handleTap(0); widget.onAlarmTap!();},
           isSelected: selectedIndex == 0,
         ),
         BottomBarButton(
-          icon: Icons.alarm,
-          onTap: () => _handleTap(1),
+          icon: Icons.newspaper,
+          onTap: () { _handleTap(1); widget.onNewsTap!();},
           isSelected: selectedIndex == 1,
         ),
         BottomBarButton(
-          icon: Icons.newspaper,
-          onTap: () => _handleTap(2),
-          isSelected: selectedIndex == 2,
-        ),
-        BottomBarButton(
           icon: Icons.person,
-          onTap: () {_handleTap(3); widget.onTap();},
-          isSelected: selectedIndex == 3,
+          onTap: () {_handleTap(2); widget.onPersonTap!();},
+          isSelected: selectedIndex == 2,
         ),
       ],
     );
@@ -439,42 +448,24 @@ class _BottomBarState extends State<BottomBar> {
 
 class BottomBarButton extends StatefulWidget {
   final IconData icon;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isSelected ;
   
 
-  const BottomBarButton({super.key, required this.icon, required this.onTap, required this.isSelected});
+  const BottomBarButton({super.key, required this.icon, this.onTap, required this.isSelected});
 
   @override
   State<BottomBarButton> createState() => _BottomBarButtonState();
 }
 
 class _BottomBarButtonState extends State<BottomBarButton> {
-
-  bool clicked = false;
-  Color buttoncolor = Colors.white;
-  double size = 25;
-
-  // void toggleColor(){
-  //   setState(() {
-  //     if(clicked){
-  //       buttoncolor = Color.fromARGB(255, 183, 255, 238);
-  //       size = 35;
-  //     }else{
-  //       size = 25;
-  //       buttoncolor = Colors.white;
-  //     }
-  //     clicked = !clicked;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(widget.icon, color: widget.isSelected?const Color.fromARGB(255, 183, 255, 238):Colors.white,size: size,),
+      icon: Icon(widget.icon, color: widget.isSelected?const Color.fromARGB(255, 183, 255, 238):Colors.white,size: 25,),
       onPressed: () {
         // Handle button tap
-        widget.onTap();
+        widget.onTap!();
       },
     );
   }

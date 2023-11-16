@@ -11,6 +11,8 @@ class Alarm extends StatefulWidget {
 class _AlarmState extends State<Alarm> {
   @override
   Widget build(BuildContext context) {
+    var now = DateTime.now();
+    print(now);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(onPressed: (){
