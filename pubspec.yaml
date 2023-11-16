@@ -49,6 +49,8 @@ dependencies:
   path_provider: ^2.1.1
   flutter_svg: ^1.0.3
   geolocator: ^10.1.0
+  dotted_border: ^2.1.0
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   flutter_test:
