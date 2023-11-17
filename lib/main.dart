@@ -1,9 +1,11 @@
 import 'package:all_in_one/HomePage.dart';
 import 'package:all_in_one/LoginOrSignupPage.dart';
+import 'package:all_in_one/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -12,7 +14,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UserProvider(),
+      child:const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
