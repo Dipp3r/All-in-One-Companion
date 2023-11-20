@@ -35,7 +35,7 @@ class _NewsAppState extends State<NewsApp> {
   }
 
   @override
-  
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -68,7 +68,7 @@ class _NewsAppState extends State<NewsApp> {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 233, 233, 233),
+                  color: const Color.fromARGB(255, 233, 233, 233),
                   borderRadius: BorderRadius.circular(10.0), 
                 ),
                 child: Column(
@@ -101,11 +101,4 @@ class _NewsAppState extends State<NewsApp> {
       print('Failed to launch Chrome: $e');
     }
   }
-
 }
-
-
-
-
-  
-

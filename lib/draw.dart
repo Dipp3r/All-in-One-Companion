@@ -14,6 +14,7 @@ class DoodleApp extends StatefulWidget {
   @override
   State<DoodleApp> createState() => _DoodleAppState();
 }
+
 class _DoodleAppState extends State<DoodleApp> {
   String selectedShape = 'circle';
   final GlobalKey _key = GlobalKey();
@@ -323,4 +324,3 @@ class ShapeData {
   
   ShapeData({required this.shapeColor,required this.initialx,required this.initialy,required this.finalx,required this.finaly,required this.radius, required this.shapeType, required this.strokeWidth});
 }
-

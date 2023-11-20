@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:all_in_one/RssFeed.dart';
 import 'package:all_in_one/alarm.dart';
 import 'package:all_in_one/calculator.dart';

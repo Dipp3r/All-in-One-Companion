@@ -96,7 +96,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         
         print("output  = ${_output} operand = ${_operand} num1 = ${_num1} num2 = ${_num2}");
       } else {
-        _output += double.parse(buttonText).toString();
+        _output += buttonText;
         print("output  = ${_output} operand = ${_operand} num1 = ${_num1} num2 = ${_num2}");
       }
     });

@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class Alarm extends StatefulWidget {
   const Alarm({super.key});
   @override
@@ -23,8 +22,7 @@ class _AlarmState extends State<Alarm> {
   TimeOfDay _selectedTime = TimeOfDay.now();
   final CollectionReference _alarmsCollection = FirebaseFirestore.instance.collection('alarms');
   bool switchState = true;
-
-
+  
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -365,5 +363,3 @@ class _ClockState extends State<Clock> {
     return '$hour:$minute';
   }
 }
-
-
