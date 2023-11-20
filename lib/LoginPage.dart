@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +8,7 @@ class LoginPage extends StatefulWidget {
 
   @override
   State<LoginPage> createState() => _LoginPageState();
+  
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     });
     try{
-      Future<UserCredential> userCredential =  FirebaseAuth.instance.signInWithEmailAndPassword(
+      FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text, 
         password: passwordController.text,
       );
@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
     } on FirebaseAuthException catch(e){
       Navigator.pop(context);
-      print("ERROR ON FIREBASE"+e.code);
       if(e.code == 'INVALID_LOGIN_CREDENTIALS'){
         showError("Incorrect password or email");     
       } else if(e.code == 'invalid-email'){

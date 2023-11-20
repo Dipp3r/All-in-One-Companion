@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InfoButton extends StatelessWidget {
   InfoButton({super.key, required this.msg, required this.infoColor});
 
